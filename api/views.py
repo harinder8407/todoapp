@@ -19,14 +19,14 @@ def apioverview(request):
 
 @api_view(['GET'])
 def tasklist(request):
-    tasks = Task.objects.all().order_by('-id')
+    tasks = Task.objects.all().filter(user=request.user).order_by('-id')
     serilizer = TaskSerializer(tasks, many=True)
     return Response(serilizer.data)
 
 
 @api_view(['GET'])
 def taskdetail(request, pk):
-    tasks = Task.objects.get(id=pk)
+    tasks = Task.objects.get(id=pk).filter(user=request.user)
     serilizer = TaskSerializer(tasks, many=False)
     return Response(serilizer.data)
 
@@ -35,7 +35,7 @@ def taskcreate(request):
     serilizer = TaskSerializer(data=request.data)
     
     if serilizer.is_valid():
-        serilizer.save()
+        serilizer.save(user=request.user)
     return Response(serilizer.data)
 
 @api_view(['POST'])
@@ -44,7 +44,7 @@ def taskupdate(request, pk):
     serilizer = TaskSerializer(instance=tasks, data=request.data)
     
     if serilizer.is_valid():
-        serilizer.save()
+        serilizer.save(user=request.user)
     return Response(serilizer.data)
 
 @api_view(['DELETE'])
