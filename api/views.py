@@ -49,7 +49,7 @@ def taskupdate(request, pk):
 
 @api_view(['DELETE'])
 def taskdelete(request, pk):
-    tasks = Task.objects.get(id=pk)
+    tasks = Task.objects.get(id=pk).filter(user=request.user)
     tasks.delete()
     return Response('item deleted')
 
