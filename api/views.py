@@ -52,5 +52,4 @@ def taskdelete(request, pk):
     tasks = Task.objects.get(id=pk)
     tasks.delete().filter(user=request.user)
     return Response('item deleted')
-    Wishlist.objects.all().delete()
 
