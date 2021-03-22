@@ -4,6 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import TaskSerializer
 from .models import Task
+from rest_framework.authtoken.models import Token
+
+
 @api_view(['GET'])
 def apioverview(request):
     api_urls = {
@@ -22,7 +25,7 @@ def tasklist(request):
     tasks = Task.objects.all().filter(user=request.user).order_by('-id')
     serilizer = TaskSerializer(tasks, many=True)
     return Response(serilizer.data)
-
+    
 
 @api_view(['GET'])
 def taskdetail(request, pk):
@@ -52,4 +55,5 @@ def taskdelete(request, pk):
     tasks = Task.objects.get(id=pk)
     tasks.delete().filter(user=request.user)
     return Response('item deleted')
+
 

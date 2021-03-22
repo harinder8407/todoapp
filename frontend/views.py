@@ -14,6 +14,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                
                 return render(request, 'frontend/index.html')
             else:
                 return render(request, 'frontend/login.html', {'error_message': 'Your account has been disabled'})
